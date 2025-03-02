@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://neuralnetworth-backend-409815903554.us-central1.run.app/api',
+        target: 'https://neuralnetworth-backend-409815903554.us-central1.run.app',
         changeOrigin: true,
         secure: false,
       },
