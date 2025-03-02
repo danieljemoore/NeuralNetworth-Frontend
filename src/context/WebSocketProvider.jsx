@@ -25,7 +25,7 @@ export const WebSocketProvider = ({ children }) => {
   const reconnectTimeoutRef = useRef(null);
 
   const connectWebSocket = () => {
-    const ws = new WebSocket('ws://localhost:5001/ws');
+    const ws = new WebSocket('wss://neuralnetworth-backend-409815903554.us-central1.run.app/ws');
     wsRef.current = ws;
 
     ws.onopen = () => {
