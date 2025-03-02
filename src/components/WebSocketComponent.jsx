@@ -96,7 +96,7 @@ function WebSocketComponent() {
 
 	const triggerApi = async (action) => {
 		try {
-			const response = await fetch(`/api/${action}`, { method: 'POST' });
+			const response = await fetch(`${API_BASE_URL}/${action}`, { method: 'POST' });
 			if (!response.ok) console.error(`api call to /${action} failed`);
 		} catch (err) {
 			console.error(`error triggering ${action}:`, err);
@@ -105,7 +105,7 @@ function WebSocketComponent() {
 
 	const triggerDeleteApi = async (action) => {
 		try {
-			const response = await fetch(`/api/${action}`, { method: 'DELETE' });
+			const response = await fetch(`${API_BASE_URL}/api/${action}`, { method: 'DELETE' });
 			if (!response.ok) console.error(`api call to /${action} failed`);
 		} catch (err) {
 			console.error(`error triggering ${action}:`, err);

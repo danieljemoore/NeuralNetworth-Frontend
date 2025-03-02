@@ -5,7 +5,7 @@ const FooterNav = () => {
 	const [showLeaderboard, setShowLeaderboard] = useState(false);
 	const handleClick = async () => {
 		try {
-			const response = await fetch('http://localhost:5001/api/generate/append', {
+			const response = await fetch('${API_BASE_URL}/generate/append', {
 				method: 'POST',
 				headers: {
 				},
@@ -36,7 +36,7 @@ const FooterNav = () => {
 
 				{showLeaderboard && (
 					<div className="absolute bottom-full mb-2 left-0 w-64 bg-white rounded-lg shadow-lg p-4 border border-gray-200">
-							<Leaderboard />
+						<Leaderboard />
 					</div>
 				)}
 			</div>

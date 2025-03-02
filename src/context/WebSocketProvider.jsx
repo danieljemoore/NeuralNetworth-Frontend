@@ -135,7 +135,7 @@ export const WebSocketProvider = ({ children }) => {
 
   const triggerApi = async (action) => {
     try {
-      const response = await fetch(`/api/${action}`, { method: 'POST' });
+      const response = await fetch(`${API_BASE_URL}/${action}`, { method: 'POST' });
       if (!response.ok) console.error(`API call to /${action} failed`);
     } catch (err) {
       console.error(`Error triggering ${action}:`, err);
@@ -144,7 +144,7 @@ export const WebSocketProvider = ({ children }) => {
 
   const triggerDeleteApi = async (action) => {
     try {
-      const response = await fetch(`/api/${action}`, { method: 'DELETE' });
+      const response = await fetch(`${API_BASE_URL}/${action}`, { method: 'DELETE' });
       if (!response.ok) console.error(`API call to /${action} failed`);
     } catch (err) {
       console.error(`Error triggering ${action}:`, err);
@@ -153,7 +153,7 @@ export const WebSocketProvider = ({ children }) => {
 
   const triggerPostApi = async (endpoint, data) => {
     try {
-      const response = await fetch(`/api/${endpoint}`, {
+      const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -167,7 +167,7 @@ export const WebSocketProvider = ({ children }) => {
   };
   const triggerGetApi = async (endpoint, data) => {
     try {
-      const response = await fetch(`/api/${endpoint}`, {
+      const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -182,7 +182,7 @@ export const WebSocketProvider = ({ children }) => {
   // Fetch stock prices via API
   const fetchStocks = async () => {
     try {
-      const response = await fetch('/api/companies');
+      const response = await fetch(`${API_BASE_URL}/api/companies`);
       if (response.ok) {
         const data = await response.json();
         setStocks(data);

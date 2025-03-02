@@ -5,7 +5,7 @@ import axios from 'axios';
 const StartGameButton = () => {
 	const startGame = async () => {
 		try {
-			const response = await axios.post('/api/round/start_manual');
+			const response = await axios.post('${API_BASE_URL}/round/start_manual');
 			console.log(response.data.message);
 		} catch (error) {
 			console.error('Error starting game:', error.response?.data?.error || error.message);

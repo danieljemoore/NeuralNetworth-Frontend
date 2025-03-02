@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import BuyAndSellButtons from "./BuyAndSellButtons";
 import { useWebSocket } from "../context/WebSocketProvider"; // Import the hook
+import { API_BASE_URL } from "../corsHack";
 
 const CompanyList = () => {
 	const [companies, setCompanies] = useState([]);
@@ -24,7 +25,7 @@ const CompanyList = () => {
 			setLoading(true);
 			setError(null);
 			try {
-				const response = await fetch("/api/companies", {
+				const response = await fetch(`${API_BASE_URL}/companies`, {
 					method: "GET",
 					headers: {
 						"Content-Type": "application/json",
