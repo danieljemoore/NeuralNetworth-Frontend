@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Leaderboard from './Leaderboard';
 
 const FooterNav = () => {
 	const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -35,22 +36,7 @@ const FooterNav = () => {
 
 				{showLeaderboard && (
 					<div className="absolute bottom-full mb-2 left-0 w-64 bg-white rounded-lg shadow-lg p-4 border border-gray-200">
-						<h3 className="text-lg font-semibold text-gray-800 mb-3">Leaderboards</h3>
-						<div className="space-y-2">
-							{/* Placeholder leaderboard items */}
-							<div className="flex justify-between items-center">
-								<span className="text-gray-700">1. Player One</span>
-								<span className="font-medium">1000 pts</span>
-							</div>
-							<div className="flex justify-between items-center">
-								<span className="text-gray-700">2. Player Two</span>
-								<span className="font-medium">850 pts</span>
-							</div>
-							<div className="flex justify-between items-center">
-								<span className="text-gray-700">3. Player Three</span>
-								<span className="font-medium">720 pts</span>
-							</div>
-						</div>
+							<Leaderboard />
 					</div>
 				)}
 			</div>

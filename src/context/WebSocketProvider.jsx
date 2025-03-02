@@ -15,6 +15,12 @@ export const WebSocketProvider = ({ children }) => {
     roundEnded: false,
   });
 
+  const [portfolios, setPortfolios] = useState([]);
+  const [currentRound, setCurrentRound] = useState(null);
+  const [winner, setWinner] = useState(null);
+  const [allRoundsCompleted, setAllRoundsCompleted] = useState(false);
+  const [timer, setTimer] = useState(null);
+
   const wsRef = useRef(null);
   const reconnectTimeoutRef = useRef(null);
 
@@ -34,12 +40,34 @@ export const WebSocketProvider = ({ children }) => {
         const msg = JSON.parse(event.data);
         setMessages((prev) => [...prev, msg]);
         setSummary((prev) => ({ ...prev, totalMessages: prev.totalMessages + 1 }));
+
         if (msg.event === 'stock_update') {
           // Broadcast stock updates to consumers
           // You can use a callback or context to pass this data
           // For simplicity, we'll store messages and let consumers handle them
           setMessages((prev) => [...prev, msg]);
         }
+        if (msg.event === 'round_status') {
+          setPortfolios(msg.data);
+        }
+        if (msg.event === 'round_started') {
+          setCurrentRound(msg.data);
+        }
+
+        if (msg.event === 'round_ended') {
+          setCurrentRound(null);
+          setWinner(msg.data);
+        }
+
+        if (msg.event === 'all_rounds_completed') {
+          setAllRoundsCompleted(true);
+        }
+
+        if (msg.event === 'timer_update') {
+          setCurrentRound(msg.data.round_id);
+          setTimer(msg.data);
+        }
+
         if (msg.event === 'all_portfolios') {
           setPlayers(msg.data);
         } else if (msg.event === 'player_joined') {
@@ -51,10 +79,6 @@ export const WebSocketProvider = ({ children }) => {
             return prev;
           });
           setSummary((prev) => ({ ...prev, totalJoins: prev.totalJoins + 1 }));
-        } else if (msg.event === 'round_started') {
-          setSummary((prev) => ({ ...prev, roundStarted: true, roundEnded: false }));
-        } else if (msg.event === 'round_ended') {
-          setSummary((prev) => ({ ...prev, roundEnded: true }));
         } else if (msg.event === 'portfolio_update') {
           const updatedPlayer = msg.data;
           setPlayers((prev) => {
@@ -187,7 +211,7 @@ export const WebSocketProvider = ({ children }) => {
 
   return (
     <WebSocketContext.Provider
-      value={{ connected, messages, players, summary, stocks, sendMessage, triggerApi, triggerDeleteApi, triggerPostApi, triggerGetApi, fetchStocks }}
+      value={{ connected, messages, players, portfolios, summary, stocks, sendMessage, triggerApi, triggerDeleteApi, triggerPostApi, triggerGetApi, fetchStocks, currentRound, winner, allRoundsCompleted, timer }}
     >
       {children}
     </WebSocketContext.Provider>

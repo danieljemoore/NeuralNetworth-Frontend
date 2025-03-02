@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '../context/UserProvider';
 import { useWebSocket } from '../context/WebSocketProvider';
+import Timer from './Timer';
+import StartGameButton from './StartGameButton';
 
 const PlayerStatusHeader = () => {
 	const { currentUser, getPortfolioValue } = useUser();
@@ -40,11 +42,16 @@ const PlayerStatusHeader = () => {
 	return (
 		<div className="bg-gray-100 p-4 rounded-md shadow-sm mb-4">
 			<div className="flex flex-wrap justify-between items-center">
-				<div className="flex items-center space-x-2">
-					<div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
-						{currentUser.username.charAt(0).toUpperCase()}
+				<div className="flex items-center space-x-2 gap-2">
+					<div className="flex items-center space-x-2">
+						<div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+							{currentUser.username.charAt(0).toUpperCase()}
+						</div>
+
+						<h2 className="text-lg font-semibold">{currentUser.username}</h2>
 					</div>
-					<h2 className="text-lg font-semibold">{currentUser.username}</h2>
+					<Timer />
+					<StartGameButton />
 				</div>
 
 				<div className="flex flex-wrap gap-4 mt-2 sm:mt-0">

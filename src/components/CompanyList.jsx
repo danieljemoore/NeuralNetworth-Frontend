@@ -1,5 +1,5 @@
 // src/components/CompanyList.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
 	LineChart,
 	Line,
@@ -16,7 +16,7 @@ const CompanyList = () => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	const { messages } = useWebSocket(); // Destructure messages from context
+	const { messages, connected } = useWebSocket(); // Destructure messages and connection status
 
 	// Fetch companies on mount
 	useEffect(() => {
@@ -50,12 +50,18 @@ const CompanyList = () => {
 		fetchCompanies();
 	}, []);
 
+	// Use a ref to store the latest companies state
+	const companiesRef = useRef(companies);
+	useEffect(() => {
+		companiesRef.current = companies;
+	}, [companies]);
+
 	// Listen for WebSocket messages and update companies
 	useEffect(() => {
 		if (messages.length === 0) return;
 
 		const lastMessage = messages[messages.length - 1];
-		if (lastMessage.event === 'stock_update') {
+		if (lastMessage.event === "stock_update") {
 			const { ticker, price } = lastMessage.data;
 			setCompanies((prevCompanies) => {
 				return prevCompanies.map((company) => {
@@ -65,10 +71,17 @@ const CompanyList = () => {
 							...company.historicalStockPrices,
 							price,
 						];
+						// To limit history to latest 100 entries
+						const MAX_HISTORY = 100;
+						const trimmedHistorical =
+							updatedHistorical.length > MAX_HISTORY
+								? updatedHistorical.slice(-MAX_HISTORY)
+								: updatedHistorical;
+
 						return {
 							...company,
 							stockPrice: price,
-							historicalStockPrices: updatedHistorical,
+							historicalStockPrices: trimmedHistorical,
 						};
 					}
 					return company;
@@ -91,6 +104,13 @@ const CompanyList = () => {
 
 	return (
 		<div className="container mx-auto px-4 py-8">
+			{/* Connection Status */}
+			<div className="fixed top-0 left-0 right-0 bg-transparent text-red-500 text-center py-2 z-50">
+				{connected
+					? ""
+					: "Disconnected - Reconnecting..."}
+			</div>
+
 			<h2 className="text-2xl font-bold mb-4 text-gray-800">
 				Companies to Trade (Gemini Powered!)
 			</h2>
@@ -110,12 +130,15 @@ const CompanyList = () => {
 						<div className="flex items-center justify-between mb-4">
 							{/* Conditional Rendering to Prevent Undefined */}
 							<span className="text-green-500 font-bold">
-								{typeof company.stockPrice === 'number' ? `$${company.stockPrice.toFixed(2)}` : 'N/A'}
+								{typeof company.stockPrice === "number"
+									? `$${company.stockPrice.toFixed(2)}`
+									: "N/A"}
 							</span>
 							<BuyAndSellButtons company={company} />
 						</div>
 						{/* Historical Stock Price Chart */}
-						{company.historicalStockPrices && company.historicalStockPrices.length > 0 ? (
+						{company.historicalStockPrices &&
+							company.historicalStockPrices.length > 0 ? (
 							<ResponsiveContainer width="100%" height={150}>
 								<LineChart
 									data={company.historicalStockPrices.map((price, i) => ({
@@ -124,7 +147,10 @@ const CompanyList = () => {
 									}))}
 								>
 									<XAxis dataKey="day" tick={{ fontSize: 12 }} />
-									<YAxis domain={["auto", "auto"]} tick={{ fontSize: 12 }} />
+									<YAxis
+										domain={["auto", "auto"]}
+										tick={{ fontSize: 12 }}
+									/>
 									<Tooltip />
 									<Line
 										type="monotone"

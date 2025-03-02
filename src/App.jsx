@@ -10,6 +10,8 @@ import WebSocketComponent from '@/components/WebSocketComponent';
 import WebSocketDisplay from '@/components/WebSocketDisplay';
 import PlayerStatusHeader from '@/components/PlayerStatusHeader';
 import FooterNav from '@/components/FooterNav';
+import StartGameButton from '@/components/StartGameButton';
+import Timer from '@/components/Timer';
 
 const App = () => {
   return (
@@ -26,7 +28,9 @@ const App = () => {
                     <div className="sticky top-0 shadow-md z-10">
                       <PlayerStatusHeader />
                     </div>
-                    <CompanyList />
+                    <div className="pb-10">
+                      <CompanyList />
+                    </div>
                     <div className="fixed bottom-0 right-0 p-4">
                       <FooterNav />
                     </div>
@@ -37,6 +41,7 @@ const App = () => {
                   <>
                     <PlayerStatusHeader />
                     <CompanyList />
+                    <Timer />
                     <WebSocketDisplay />
                   </>
                 } />

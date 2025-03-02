@@ -17,7 +17,7 @@ const BuyAndSellButtons = ({ company }) => {
 
 			{/* Sell Button */}
 			<button
-				onClick={() => sellStock(company.name, company.ticker, 1, company.stockPrice)}
+				onClick={() => sellStock(company.name, company.ticker, 5, company.stockPrice)}
 				className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 				disabled={owned <= 0} // Disable if no shares to sell
 				title={owned > 0 ? "Sell 1 share" : "No shares to sell"}
@@ -27,7 +27,7 @@ const BuyAndSellButtons = ({ company }) => {
 
 			{/* Buy Button */}
 			<button
-				onClick={() => buyStock(company.name, company.ticker, 1, company.stockPrice)}
+				onClick={() => buyStock(company.name, company.ticker, 5, company.stockPrice)}
 				className="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 				title="Buy 1 share"
 			>
