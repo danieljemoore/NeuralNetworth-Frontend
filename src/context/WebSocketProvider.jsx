@@ -1,5 +1,6 @@
 // src/context/WebSocketProvider.jsx
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { API_BASE_URL } from '../corsHack';
 
 const WebSocketContext = createContext(null);
 
@@ -211,7 +212,7 @@ export const WebSocketProvider = ({ children }) => {
 
   return (
     <WebSocketContext.Provider
-      value={{ connected, messages, players, portfolios, summary, stocks, sendMessage, triggerApi, triggerDeleteApi, triggerPostApi, triggerGetApi, fetchStocks, currentRound, winner, allRoundsCompleted, timer }}
+      value={{ connected, messages, players, portfolios, summary, stocks, sendMessage, triggerApi, triggerDeleteApi, triggerPostApi, triggerGetApi, fetchStocks, currentRound, winner, allRoundsCompleted, timer, API_BASE_URL }}
     >
       {children}
     </WebSocketContext.Provider>
